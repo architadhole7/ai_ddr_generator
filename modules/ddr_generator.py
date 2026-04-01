@@ -15,7 +15,7 @@ def clean_text(text):
     for w in remove_words:
         text = re.sub(w, "", text, flags=re.IGNORECASE)
 
-    # 🔥 FIX BROKEN e.g patterns (ALL cases)
+    #  FIX BROKEN e.g patterns (ALL cases)
     text = re.sub(r"\(e\s*[,\.]?\s*", "(e.g., ", text)
     text = re.sub(r"e\s*\n\s*,", "e.g.,", text)
 
@@ -61,7 +61,7 @@ def infer_cause(observation):
 def generate_recommendation(observation):
     obs = observation.lower()
 
-    # 🔴 Leakage
+    #  Leakage
     if "leak" in obs:
         return [
             "Identify exact source of leakage",
@@ -70,7 +70,7 @@ def generate_recommendation(observation):
             "Restore damaged surfaces after repair"
         ]
 
-    # 🟠 Dampness
+    # Dampness
     elif any(w in obs for w in ["damp", "seepage", "moisture"]):
         options = [
             [
@@ -95,7 +95,7 @@ def generate_recommendation(observation):
 
         return random.choice(options)
 
-    # 🟡 Structural
+    # Structural
     elif any(w in obs for w in ["crack", "column", "beam"]):
         return [
             "Inspect structural elements for damage",
@@ -104,7 +104,7 @@ def generate_recommendation(observation):
             "Monitor for further movement"
         ]
 
-    # 🔵 Material
+    #  Material
     elif any(w in obs for w in ["tile", "paint", "rust"]):
         return [
             "Inspect damaged materials",
@@ -113,7 +113,7 @@ def generate_recommendation(observation):
             "Apply finishing or protective coating"
         ]
 
-    # ⚪ Default
+   
     return [
         "Inspect the affected area",
         "Identify root cause",
@@ -122,7 +122,7 @@ def generate_recommendation(observation):
     ]
 
 
-# 🔹 MAIN FUNCTION
+#  MAIN FUNCTION
 def generate_ddr(final_obs):
     if not final_obs:
         return {
@@ -154,21 +154,21 @@ def generate_ddr(final_obs):
         if details == "Not Available":
             missing_areas.add(area)
 
-        # ⚠️ Conflict detection
+        #  Conflict detection
         if "leakage" in details.lower() and "no leakage" in details.lower():
             conflict_notes.append(f"Conflicting leakage info in {area}")
 
-        # 🧹 Clean observation
+        #  Clean observation
         raw_text = details if details != "Not Available" else issue
         observation_text = clean_text(raw_text)
 
-        # 🔥 Default recommendation
+        # recommendation
         recommendation = generate_recommendation(observation_text)
 
-        # 🔥 Default cause
+        #  Default cause
         cause = "Not Available"
 
-        # 🤖 AI parsing
+        #  AI parsing
         if analysis:
             analysis = analysis.replace("**", "")
 
@@ -199,7 +199,7 @@ def generate_ddr(final_obs):
                     if cleaned:
                         recommendation = [p.capitalize() for p in cleaned]
 
-        # 🔁 fallback cause
+        #  fallback cause
         if cause == "Not Available":
             cause = infer_cause(observation_text)
 
@@ -213,7 +213,7 @@ def generate_ddr(final_obs):
         else:
             severity = "Low"
 
-        # 🧹 Remove duplicates
+        #  Remove duplicates
         key = (area, observation_text)
         if key in seen:
             continue
@@ -228,16 +228,16 @@ def generate_ddr(final_obs):
             "images": obs.get("images", [])
         })
 
-    # 🧾 Summary
+    #  Summary
     summary = f"{len(observations)} issues were identified during inspection."
 
-    # 📌 Missing info
+    # Missing info
     if missing_areas:
         missing_info = "Details missing for: " + ", ".join(missing_areas)
     else:
         missing_info = "Not Available"
 
-    # ⚠️ Notes
+    #  Notes
     additional_notes = "Report generated strictly from provided documents."
     if conflict_notes:
         additional_notes += " Conflicts observed: " + ", ".join(conflict_notes)
