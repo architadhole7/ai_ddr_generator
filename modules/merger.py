@@ -6,14 +6,14 @@ def merge_observations(inspection, thermal):
         area_ins = (ins.get("area") or "").lower()
         details = ins.get("details", "")
 
-        # try to attach relevant thermal data
+        # try to attach relevant data
         for i, th in enumerate(thermal):
             if i in used_thermal:
                 continue
 
             area_th = (th.get("area") or "").lower()
 
-            # 🔍 match if area overlaps OR similar keywords
+            #  match if area overlaps OR similar keywords
             if area_ins and area_th and (area_ins in area_th or area_th in area_ins):
                 thermal_details = th.get("details", "")
 
@@ -26,7 +26,7 @@ def merge_observations(inspection, thermal):
         ins["details"] = details
         merged.append(ins)
 
-    # ➕ add leftover thermal observations (not matched)
+    #  add leftover thermal observations (not matched)
     for i, th in enumerate(thermal):
         if i not in used_thermal:
             merged.append(th)
