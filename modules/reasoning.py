@@ -6,7 +6,7 @@ genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel("gemini-2.5-flash")
 
 
-# 🔥 Generalized fallback logic
+#  Generalized fallback logic
 def infer_cause(observation):
     obs = observation.lower()
 
@@ -43,14 +43,14 @@ def infer_severity(text):
 def enrich_observations(observations):
     enriched = []
 
-    # 🔥 LIMIT AI CALLS (VERY IMPORTANT)
+    #  LIMIT AI CALLS because of limited credits
     MAX_AI_CALLS = 5
     ai_calls = 0
 
     for obs in observations:
         text = f"{obs.get('issue', '')} {obs.get('details', '')}"
 
-        # 🧠 TRY AI (only few times)
+        #  TRY AI (only few times)
         if ai_calls < MAX_AI_CALLS:
             prompt = f"""
 You are a building inspection expert.
@@ -80,7 +80,7 @@ Rules:
             except Exception as e:
                 print("Gemini reasoning error:", str(e))
 
-                # 🔁 fallback
+                #  fallback
                 obs["analysis"] = f"""
 Root Cause: {infer_cause(text)}
 Severity: {infer_severity(text)}
@@ -88,7 +88,7 @@ Recommendation: Further inspection and necessary repair recommended.
 """
 
         else:
-            # 🔥 ALWAYS fallback after limit
+            #  ALWAYS fallback after limit
             obs["analysis"] = f"""
 Root Cause: {infer_cause(text)}
 Severity: {infer_severity(text)}
