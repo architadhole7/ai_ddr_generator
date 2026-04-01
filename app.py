@@ -31,13 +31,6 @@ os.makedirs(IMAGE_FOLDER, exist_ok=True)
 FINAL_REPORT_PATH = os.path.join(OUTPUT_FOLDER, "report.html")
 
 
-# 🔍 Classify file type
-def classify_file(text):
-    text = text.lower()
-    if any(word in text for word in ["temperature", "thermal", "°c", "heat"]):
-        return "thermal"
-    return "inspection"
-
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -53,7 +46,7 @@ def index():
             all_text_data = []
             all_images = []
 
-            # 📥 Process files
+            #  Process files
             for file in files:
                 file_path = os.path.join(UPLOAD_FOLDER, file.filename)
                 file.save(file_path)
@@ -75,10 +68,10 @@ def index():
             print("TEXT FILES:", len(all_text_data))
             print("TOTAL IMAGES:", len(all_images))
 
-            # 🧹 Clean images
+            #  Clean images
             cleaned_images = clean_images(all_images)
 
-            # 🤖 Extract observations
+            #  Extract observations
             inspection_obs = []
             thermal_obs = []
 
@@ -93,31 +86,31 @@ def index():
             print("INSPECTION OBS:", len(inspection_obs))
             print("THERMAL OBS:", len(thermal_obs))
 
-            # 🧠 Merge
+            #  Merge
             merged_obs = merge_observations(inspection_obs, thermal_obs) or []
 
-            # 🔎 Reasoning
+            #  Reasoning
             enriched_obs = enrich_observations(merged_obs) or []
 
-            # 🖼️ Match images
+            #  Match images
             final_obs = match_images(enriched_obs, cleaned_images) or []
 
             print("FINAL OBS:", len(final_obs))
 
-            # 📄 Generate DDR
+            #  Generate DDR
             report = generate_ddr(final_obs)
 
             if not report:
                 return render_template("index.html", error="Failed to generate report.")
 
-            # ✅ Render HTML
+            # Render HTML
             rendered_html = render_template("report_template.html", report=report)
 
-            # 💾 Save file
+            #  Save file
             with open(FINAL_REPORT_PATH, "w", encoding="utf-8") as f:
                 f.write(rendered_html)
 
-            # 🔥 IMPORTANT CHANGE → show report page directly
+        
             return rendered_html
 
         except Exception as e:
@@ -127,13 +120,13 @@ def index():
     return render_template("index.html")
 
 
-# 🖼️ Serve images
+#  Serve images
 @app.route('/images/<path:filename>')
 def serve_image(filename):
     return send_from_directory(IMAGE_FOLDER, filename)
 
 
-# 📥 Download report
+# Download report
 @app.route("/download")
 def download():
     if not os.path.exists(FINAL_REPORT_PATH):
