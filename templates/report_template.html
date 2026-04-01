@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DDR Report</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background: #f4f6f8;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+
+        .observation {
+            margin-bottom: 15px;
+            padding: 12px;
+            border-left: 5px solid #007BFF;
+            background: #fafafa;
+            border-radius: 5px;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        .images img {
+            max-width: 220px;
+            margin: 6px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            color: white;
+        }
+
+        .low { background: green; }
+        .medium { background: orange; }
+        .high { background: red; }
+
+        .note {
+            color: #555;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Detailed Diagnostic Report (DDR)</h1>
+
+<div style="text-align:center; margin-bottom:20px;">
+    <a href="/download">
+        <button style="padding:10px 20px; font-size:16px;">
+            Download Report
+        </button>
+    </a>
+</div>
+
+<!-- 1. Property Issue Summary -->
+<div class="section">
+    <h2>1. Property Issue Summary</h2>
+    <p>{{ report.summary or "Not Available" }}</p>
+</div>
+
+<!-- 2. Area-wise Observations -->
+<div class="section">
+    <h2>2. Area-wise Observations</h2>
+
+    {% if report.observations %}
+        {% for obs in report.observations %}
+            <div class="observation">
+
+                <p><span class="label">Area:</span> {{ obs.area or "Not Available" }}</p>
+
+                <p><span class="label">Observation:</span> {{ obs.observation or "Not Available" }}</p>
+
+                <p>
+                    <span class="label">Severity:</span>
+                    {% set sev = (obs.severity or "Not Available").lower() %}
+                    <span class="badge {{ sev }}">{{ obs.severity or "Not Available" }}</span>
+                </p>
+
+                <p><span class="label">Probable Root Cause:</span> {{ obs.cause or "Not Available" }}</p>
+
+                <!-- ✅ Recommended Actions (FINAL FIX) -->
+                <p><span class="label">Recommended Action:</span></p>
+
+                {% if obs.recommendation is iterable and obs.recommendation is not string %}
+                    <ul>
+                        {% for step in obs.recommendation %}
+                            <li>{{ step }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <ul>
+                        {% for step in obs.recommendation.split('.') %}
+                            {% if step.strip() %}
+                                <li>{{ step.strip() }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                <!-- Images -->
+                <div class="images">
+                    {% if obs.images %}
+                        {% for img in obs.images %}
+                            <img src="{{ url_for('serve_image', filename=img.replace('/images/', '')) }}">
+                        {% endfor %}
+                    {% else %}
+                        <p class="note">Image Not Available</p>
+                    {% endif %}
+                </div>
+
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Not Available</p>
+    {% endif %}
+</div>
+
+<!-- 3. Additional Notes -->
+<div class="section">
+    <h2>3. Additional Notes</h2>
+    <p>{{ report.additional_notes or "Not Available" }}</p>
+</div>
+
+<!-- 4. Missing / Unclear Info -->
+<div class="section">
+    <h2>4. Missing / Unclear Information</h2>
+    <p>{{ report.missing_info or "Not Available" }}</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DDR Generator</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 60px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            width: 100%;
+        }
+
+        button {
+            background: #007BFF;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            font-size: 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .note {
+            font-size: 13px;
+            color: #555;
+        }
+
+        .error {
+            margin-top: 15px;
+            color: red;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .report-section {
+            margin-top: 40px;
+        }
+
+        .download-btn {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>DDR Report Generator</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        
+        <label>Select Report Files:</label><br><br>
+        <input type="file" name="files" multiple required><br><br>
+        
+        <div class="note">
+            You can upload multiple files (Inspection, Thermal, Images, etc.)
+        </div>
+
+        <br>
+
+        <button type="submit">Generate DDR Report</button>
+    </form>
+
+    <!-- 🔴 Error -->
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <!-- ✅ Report -->
+    {% if report %}
+        <div class="report-section">
+            <hr>
+            <h2>Generated DDR Report</h2>
+
+            <div>
+                {% include 'report_template.html' %}
+            </div>
+
+            <div class="download-btn">
+                <a href="/download">
+                    <button>Download Report</button>
+                </a>
+            </div>
+        </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
