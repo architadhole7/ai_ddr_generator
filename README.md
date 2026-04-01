@@ -126,17 +126,16 @@ python app.py
 
 ---
 
-##  Demo
+##  Demo Link
 
-( Loom video link )
+https://drive.google.com/drive/folders/1PtUr8HXUzBD_VmE-qzEaesb7rljvaZxe?usp=sharing
 
 ---
 
 ##  Submission
 
 * GitHub Repository: github.com/architadhole7/ai_ddr_generator
-* Demo Video: (Loom link)
-
+* Demo Video: https://drive.google.com/drive/folders/1PtUr8HXUzBD_VmE-qzEaesb7rljvaZxe?usp=sharing
 
 ---
 
