@@ -128,7 +128,7 @@ python app.py
 
 ##  Demo
 
-(Add your Loom video link here)
+( Loom video link )
 
 ---
 
