@@ -4,7 +4,7 @@ def match_images(observations, images):
 
     valid_images = []
 
-    # 🔍 Step 1: Filter useless images (icons, tiny files, noise)
+    #  Step 1: Filter useless images (icons, tiny files, noise)
     for img in images:
         name = img.lower()
 
@@ -27,7 +27,7 @@ def match_images(observations, images):
 
         matched = None
 
-        # 🔍 Step 2: Try basic keyword match
+        #  Step 2: Try basic keyword match
         for img in valid_images:
             img_name = img.lower()
 
@@ -35,8 +35,7 @@ def match_images(observations, images):
                 matched = img
                 break
 
-        # ❌ REMOVE RANDOM FALLBACK
-        # (this was your main problem)
+        # REMOVE RANDOM FALLBACK
         # no fallback = no wrong images
 
         if matched:
