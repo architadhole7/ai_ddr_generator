@@ -10,7 +10,7 @@ It focuses on transforming unstructured, imperfect data into a **clear, client-r
 
 ##  Key Features
 
-*  Extracts **text and images** from inspection and thermal PDFs
+*  Extracts **text and images** from the Report PDFs
 *  Identifies **observations, issues, and thermal anomalies**
 *  Merges multi-source data into a **single coherent report**
 *  Handles:
@@ -43,12 +43,12 @@ It focuses on transforming unstructured, imperfect data into a **clear, client-r
 
   * Observations
   * Affected areas
-  * Thermal insights
+  * Insights
   * Key issues
 
 ### 4. Data Merging (Core Logic)
 
-* Combines inspection + thermal findings
+* Combines report1 + report2 findings
 * Removes duplicate entries
 * Aligns related observations
 * Handles inconsistencies and missing information
@@ -126,6 +126,26 @@ python app.py
 
 ---
 
+## System Reliability & Design Approach
+
+*Note*: To improve robustness and reliability, the system incorporates a hybrid approach combining API-driven extraction with rule-based fallback logic, ensuring consistent output even in cases of API failure or incomplete responses.
+This design ensures that:
+The pipeline does not break due to API limitations or transient failures
+Missing or partially extracted data is still handled gracefully
+The system maintains consistent DDR output quality
+
+---
+
+## Additional Inputs
+
+
+With higher API usage capacity (e.g., increased rate limits or credits), the system can rely more heavily on model-driven extraction, further improving accuracy and reducing dependence on fallback mechanisms
+Enhance conflict detection between inspection and thermal data
+Improve contextual understanding for better root cause analysis
+Optimize image extraction and placement within the DDR
+
+---
+
 ##  Demo Link
 
 https://drive.google.com/drive/folders/1PtUr8HXUzBD_VmE-qzEaesb7rljvaZxe?usp=sharing
@@ -134,7 +154,7 @@ https://drive.google.com/drive/folders/1PtUr8HXUzBD_VmE-qzEaesb7rljvaZxe?usp=sha
 
 ##  Submission
 
-* GitHub Repository: github.com/architadhole7/ai_ddr_generator
+* GitHub Repository: https://github.com/architadhole7/ai_ddr_generator
 * Demo Video: https://drive.google.com/drive/folders/1PtUr8HXUzBD_VmE-qzEaesb7rljvaZxe?usp=sharing
 
 ---
