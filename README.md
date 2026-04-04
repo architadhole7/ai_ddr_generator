@@ -81,7 +81,7 @@ Generates a structured DDR with:
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 ```
 ai_ddr_generator/
@@ -99,7 +99,7 @@ ai_ddr_generator/
 
 ---
 
-## ⚠️ Limitations
+##  Limitations
 
 * Performance depends on input document quality
 * Image-to-observation mapping can be improved
